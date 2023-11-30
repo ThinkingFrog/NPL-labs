@@ -1,19 +1,18 @@
 func isPalindrome(_ str: String) -> Bool {
     let cleanedString = str.lowercased().filter { $0.isLetter }
-    return checkPalindrome(cleanedString)
+    return checkPalindrome(cleanedString, cleanedString.startIndex, cleanedString.index(before: cleanedString.endIndex))
 }
 
-func checkPalindrome(_ str: String) -> Bool {
-    if str.count <= 1 {
+func checkPalindrome(_ str: String, _ firstIndex: String.Index, _ lastIndex: String.Index) -> Bool {
+    if firstIndex >= lastIndex {
         return true
     }
 
-    if str.first! != str.last! {
-        return false;
+    if str[firstIndex] != str[lastIndex] {
+        return false
     }
 
-    let substring = String(str.dropFirst().dropLast())
-    return checkPalindrome(substring)
+    return checkPalindrome(str, str.index(after: firstIndex), str.index(before: lastIndex))
 }
 
 let tests = ["A man a plan a canal Panama", "homeemoh", "Hello", " GOd Dog"]
