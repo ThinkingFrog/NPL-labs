@@ -3,32 +3,21 @@ package main
 import "fmt"
 
 func eratosthenesSieve(stop int) []int {
-	grid := make([]int, 0, stop-1)
+	divisors := make([]int, stop+1)
+	primes := make([]int, 0)
 
-	for idx := 2; idx <= stop; idx++ {
-		grid = append(grid, idx)
-	}
-
-	for primIdx := 0; primIdx < len(grid); primIdx++ {
-		step := grid[primIdx]
-
-		if step == 0 {
-			continue
+	for i := 2; i <= stop; i++ {
+		if divisors[i] == 0 {
+			divisors[i] = i
+			primes = append(primes, i)
 		}
 
-		for secIdx := primIdx + step; secIdx < len(grid); secIdx += step {
-			grid[secIdx] = 0
+		for j := 0; j < len(primes) && primes[j] <= divisors[i] && i*primes[j] <= stop; j++ {
+			divisors[i*primes[j]] = primes[j]
 		}
 	}
 
-	filteredGrid := make([]int, 0, len(grid))
-	for _, val := range grid {
-		if val != 0 {
-			filteredGrid = append(filteredGrid, val)
-		}
-	}
-
-	return filteredGrid
+	return primes
 }
 
 func main() {
